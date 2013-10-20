@@ -24,6 +24,9 @@
   <body>
     <div class="container">
         <h3 class="text-muted">Caption America</h3>
+        <div class="row">
+            Active players: <strong id="players"></strong>
+        </div>
         <div class="row top-margin">
             <img class="img-responsive col-xs-12 col-sm-6" src="img/dog_paper_bag.jpg"/>
         </div>
@@ -50,7 +53,11 @@
     <script>
       var socket = io.connect('http://192.168.1.116:8080');
       socket.on('message', function (data) {
-            appendCap(data);
+          console.log(data);
+            if (data.players)
+                $('#players').text(data.players);
+            else
+                appendOtherCap(data);
       });
       function emitCap()
       {
@@ -62,6 +69,13 @@
       {
             var ta = $("textarea");
             return ta.val();
+      }
+      function appendOtherCap(data)
+      {
+          var capDiv = $("#caps");
+
+          var appendString = "<div class='row'><div class='alert alert-warning col-xs-12 col-sm-6'>" + data + "</div></div>";
+          capDiv.append(appendString);
       }
       function appendCap(data)
       {
