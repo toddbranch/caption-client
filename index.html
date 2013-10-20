@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="/js/socket.io.js"></script>
+        <script>
+          var socket = io.connect('http://192.168.1.116:8080');
+          socket.on('message', function (data) {
+                appendCap(data);
+          });
+          function emitCap()
+          {
+              cap = getCap();
+              appendCap(cap);
+              socket.emit('message', cap);
+          }
+          function getCap()
+          {
+                var ta = $("textarea");
+                return ta.val();
+          }
+          function appendCap(data)
+          {
+              var capDiv = $("#caps");
+
+              capDiv.append("<div class='row'>");
+              capDiv.append(data);
+              capDiv.append("</div>");
+          }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h1>Caption America!</h1>
+            </div>
+            <div class="row">
+                <img src="dog_paper_bag.jpg"/>
+            </div>
+            <div class="row">
+                    <textarea class="col-md-6" rows="3"></textarea>
+            </div>
+            <div class="row">
+                    <button class="btn btn-large btn-primary" onclick="emitCap()">Submit caption!</button>
+            </div>
+            <div id="caps">
+            </div>
+        </div>
+    </body>
+</html>
